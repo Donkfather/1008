@@ -12,5 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view((auth()->guest())?'welcome':'dashboard');
 });
+Route::get('auth/logout','SocialAuthController@logout');
+Route::get('auth/{provider}/callback', 'SocialAuthController@callback');
+Route::get('auth/{provider}/redirect', 'SocialAuthController@redirect');
