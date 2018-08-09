@@ -26,10 +26,23 @@
     </script>
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
     <script src="{{mix('js/manifest.js')}}"></script>
+    <style>
+        .cookie-consent {
+            background: palegoldenrod;
+            padding: 10px;
+        }
+        .cookie-consent__agree {
+            background: #00cc83;
+            color:black;
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 <body class="bg-grey-light">
 
 <div id="app" class="h-full w-full">
+    @include('cookieConsent::index')
     @yield('content')
     <vue-snotify></vue-snotify>
 </div>
