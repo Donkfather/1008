@@ -85,7 +85,6 @@
                 return this.points[(this.event && this.event.hasOwnProperty('id'))?this.event.id:0]
             },
             reloadMap() {
-                console.log('called reloadMap')
                 if (pointArray) {
                     pointArray.clear()
                     this.markers = [];
@@ -95,7 +94,6 @@
                     data: pointArray,
                 });
                 if (this.$refs.mapRef.mapObject) {
-                    console.log(this.$refs.mapRef.mapObject);
                     this.heatmap.setMap(this.$refs.mapRef.mapObject);
                 } else {
                     this.$refs.mapRef.$mapPromise.then(map => {
