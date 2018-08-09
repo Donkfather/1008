@@ -33,7 +33,7 @@
                     <div class="pl-4 flex flex-col">
                         <div>
                             <span v-text="event.name"></span>
-                            <span v-if="event.total_checkedin">(@{{event.total_checkedin}} @{{event.total_checkedin>1?'persoane':'persoana'}})</span>
+                            <span v-if="event.total_checkedin > 0">(@{{event.total_checkedin}} @{{event.total_checkedin>1?'persoane':'persoana'}})</span>
                         </div>
                         <span class="text-grey-dark">@{{moment(event.start_date).format('DMMM H:mm')}} - @{{moment(event.end_date).format('DMMM H:mm')}}</span>
                     </div>
