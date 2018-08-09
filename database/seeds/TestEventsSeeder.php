@@ -16,6 +16,7 @@ class TestEventsSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
         Event::truncate();
         \App\EventToken::truncate();
+        \App\CheckinLocation::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
         $now = now();
         $events = [
