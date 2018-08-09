@@ -16,7 +16,7 @@ Route::get('/', function () {
 })->name('login');
 Route::get('auth/{provider}/callback', 'SocialAuthController@callback');
 Route::get('auth/{provider}/redirect', 'SocialAuthController@redirect');
-Route::view('/privacy-policy','privacy-policy');
+Route::get('/privacy-policy',function(){return view('privacy-policy');});
 Route::group(['middleware'=>['auth']],function(){
     Route::get('auth/logout','SocialAuthController@logout');
     Route::get('/points',function(){
