@@ -19,17 +19,5 @@ class GenerateTokensForUser
      */
     public function handle(UserCreated $ev)
     {
-        $tokens = collect();
-        $user = $ev->user;
-
-        Event::available()->get()->pluck('id')->each(function($event) use($user,$tokens){
-           $tokens->push([
-               'user_id' => $user->id,
-               'event_id' => $event,
-               'token' => Str::random(80)
-           ]);
-        });
-
-        EventToken::insert($tokens->toArray());
     }
 }

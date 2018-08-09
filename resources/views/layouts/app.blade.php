@@ -27,11 +27,13 @@
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
     <script src="{{mix('js/manifest.js')}}"></script>
 </head>
-<body class="bg-grey-light pt-5">
+<body class="bg-grey-light">
 
-<div id="app" class="h-full w-full flex items-center justify-center">
+<div id="app" class="h-full w-full">
     @yield('content')
+    <vue-snotify></vue-snotify>
 </div>
+
 
 
 <script src="{{mix('js/vendor.js')}}"></script>

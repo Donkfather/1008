@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EventToken extends Model
 {
     public $timestamps = false;
-    protected $dates = ['used_at'];
-    protected $fillable = ['user_id', 'event_id', 'token','used_at'];
+    protected $dates = ['checkin_at'];
+    protected $fillable = ['user_id', 'event_id', 'checkin_at'];
+
 }

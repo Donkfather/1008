@@ -18,15 +18,5 @@ class GenerateUserTokensForEvent
      */
     public function handle($event)
     {
-        $tokens = collect();
-        User::all()->pluck('id')->each(function($user) use($tokens,$event){
-            $tokens->push([
-                'user_id' => $user,
-                'event_id' => $event->event->id,
-                'token' => Str::random(80),
-            ]);
-        });
-
-        EventToken::insert($tokens->toArray());
     }
 }

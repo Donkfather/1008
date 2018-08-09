@@ -23,8 +23,7 @@ class CreateEventTokensTable extends Migration
             $table->unsignedInteger('event_id');
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
 
-            $table->string('token',80)->nullable();
-            $table->datetime('used_at')->nullable();
+            $table->datetime('checkin_at')->nullable();
 
             $table->index(['user_id','event_id']);
             $table->unique(['user_id','event_id']);

@@ -6,10 +6,18 @@
 require('./bootstrap');
 window.Vue = require('vue');
 import moment from 'moment'
+import * as VueGoogleMaps from "vue2-google-maps";
+import GmapCluster from 'vue2-google-maps/dist/components/cluster' // replace src with dist if you have Babel issues
+import Vuex, {mapState} from 'vuex'
+import Snotify, { SnotifyPosition } from 'vue-snotify';
+
+Vue.use(Snotify,{
+    toast: {
+        position: SnotifyPosition.rightTop
+    }
+});
 
 Vue.prototype.moment = moment
-
-import * as VueGoogleMaps from "vue2-google-maps";
 
 Vue.use(VueGoogleMaps, {
     load: {
@@ -18,7 +26,7 @@ Vue.use(VueGoogleMaps, {
     }
 });
 Vue.component('google-map', require('./components/GoogleMap'))
-import GmapCluster from 'vue2-google-maps/dist/components/cluster' // replace src with dist if you have Babel issues
+
 
 Vue.component('GmapCluster', GmapCluster)
 /**
@@ -29,9 +37,6 @@ Vue.component('GmapCluster', GmapCluster)
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
-import Vuex from 'vuex'
-import {mapState} from 'vuex'
-
 Vue.use(Vuex);
 
 let store = new Vuex.Store({
@@ -40,32 +45,30 @@ let store = new Vuex.Store({
         events: [],
         selectedEvent: null
     },
-    getters: {
-
-    },
+    getters: {},
     mutations: {
         addEvents(state, payload) {
             payload.forEach(item => {
-                state.events.push(_.extend(item,{locations: []}));
+                state.events.push(_.extend(item, {locations: []}));
             })
-            if(payload.length > 0){
+            if (payload.length > 0) {
                 state.selectedEvent = 0;
             }
         },
         patchEvent(state, payload) {
-            let index = _.findIndex(state.events,{id: payload.id})
+            let index = _.findIndex(state.events, {id: payload.id})
             if (~index) {
-                state.events[index] = Object.assign(state.events[index],payload.event)
+                state.events[index] = Object.assign(state.events[index], payload.event)
             }
         },
         updateUser(state, payload) {
             state.user = payload
         },
-        addLocationToEvent(state,payload){
-            let index = _.findIndex(state.events,{id: payload.event_id})
-            state.events[index].locations.push({lat:payload.lat,lng: payload.lng})
+        addLocationToEvent(state, payload) {
+            let index = _.findIndex(state.events, {id: payload.event_id})
+            state.events[index].locations.push({lat: payload.lat, lng: payload.lng})
         },
-        changeSelectedEvent(state,index){
+        changeSelectedEvent(state, index) {
             state.selectedEvent = index;
         }
     }
@@ -79,7 +82,7 @@ const app = new Vue({
         user: state => state.user,
         selectedEvent: state => state.selectedEvent
     }),
-    beforeCreate(){
+    beforeCreate() {
         this.$store.commit('updateUser', window.appState.user);
     },
     mounted() {
@@ -93,21 +96,34 @@ const app = new Vue({
         subscribeToEvents() {
             this.events.forEach(ev => {
                 Echo.channel(`event-${ev.id}`)
-                    .listen('NewCheckinLocation',  (location) => {
-                        this.$store.commit('addLocationToEvent',location)
+                    .listen('NewCheckinLocation', (location) => {
+                        this.$store.commit('addLocationToEvent', location)
                     })
             })
 
         },
         checkIn(event) {
-            axios.post(`/events/${event.id}/checkin`, {
-                token: event.user_token.token,
-                location: [44, 33]
-            })
-                .then(response => {
-                    let e = response.data.event
-                    this.$store.commit('patchEvent', {id: e.id, event: e})
-                });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    axios.post(`/events/${event.id}/checkin`, {
+                        location: {
+                            lat: position.coords.latitude + (Math.floor(Math.random() * 999) + 111) / 10**6,
+                            lng: position.coords.longitude + (Math.floor(Math.random() * 999) + 111) / 10**6
+                        },
+                    })
+                        .then(response => {
+                            let e = response.data.event
+                            this.$store.commit('patchEvent', {id: e.id, event: e})
+                            this.$snotify.success('Locatia a fost trimisa cu succes.');
+                        });
+
+                },error => {
+                    this.$snotify.warning('A aparut o eroare. Trebuie sa permiti accesul la locatie.');
+                })
+            } else {
+                alert('Location system not available. sorry :(')
+            }
+
         }
     }
 });

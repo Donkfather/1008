@@ -6,6 +6,7 @@ use App\Events\EventCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class Event extends Model
 {
@@ -27,11 +28,18 @@ class Event extends Model
         'id' => 'integer'
     ];
 
-    protected $with = ['userToken'];
+    protected $with = ['userStatus'];
 
-    protected $appends = ['status'];
+    protected $appends = ['status','total_checkedin'];
 
-    public function userToken()
+    public function getTotalCheckedinAttribute()
+    {
+        return Cache::remember('event:'.$this->id.':checkedin',5,function(){
+            return $this->checkins()->count();
+        });
+    }
+
+    public function userStatus()
     {
         return $this->hasOne(EventToken::class)->where('user_id', auth()->id() ?? 0);
     }
