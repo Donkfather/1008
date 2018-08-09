@@ -68,8 +68,14 @@
                 }
             },
             loadedGoogle(val) {
-                if(val){
+                if (val) {
                     console.log(google.maps)
+                    this.reloadMap()
+                }
+            },
+            event(ev, old) {
+                if(this.loadedGoogle){
+                    console.log(ev);
                     this.reloadMap()
                 }
             }
@@ -77,16 +83,12 @@
         methods: {
             getPoints() {
                 return this.points[this.event.id] || []
-                /*.map(item => {
-                    return new google.maps.LatLng({
-                        lat: item.lat,
-                        lng: item.lng
-                    })
-                })*/
             },
             reloadMap() {
+                console.log('called reloadMap')
                 if (pointArray) {
                     pointArray.clear()
+                    this.markers = [];
                 }
                 pointArray = new google.maps.MVCArray([]);
                 this.heatmap = new google.maps.visualization.HeatmapLayer({

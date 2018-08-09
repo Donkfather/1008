@@ -29863,23 +29863,25 @@ var pointArray = null;
                 console.log(_google.maps);
                 this.reloadMap();
             }
+        },
+        event: function event(ev, old) {
+            if (this.loadedGoogle) {
+                console.log(ev);
+                this.reloadMap();
+            }
         }
     },
     methods: {
         getPoints: function getPoints() {
             return this.points[this.event.id] || [];
-            /*.map(item => {
-                return new google.maps.LatLng({
-                    lat: item.lat,
-                    lng: item.lng
-                })
-            })*/
         },
         reloadMap: function reloadMap() {
             var _this2 = this;
 
+            console.log('called reloadMap');
             if (pointArray) {
                 pointArray.clear();
+                this.markers = [];
             }
             pointArray = new _google.maps.MVCArray([]);
             this.heatmap = new _google.maps.visualization.HeatmapLayer({
