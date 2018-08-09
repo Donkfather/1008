@@ -20,7 +20,9 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "laravel-echo": "^1.4.0",
         "laravel-mix-tailwind": "^0.1.0",
+        "pusher-js": "^4.2.2",
         "tailwindcss": "^0.6.4"
     }
 }
