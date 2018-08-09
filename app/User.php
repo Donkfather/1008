@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\UserCreated;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -26,4 +27,9 @@ class User extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    protected $dispatchesEvents = [
+        'created' => UserCreated::class,
+    ];
+
 }

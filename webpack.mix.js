@@ -13,6 +13,6 @@ require('laravel-mix-tailwind');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-    .extract(['vue'])
+    .extract(['vue','moment','vuex'])
     .sass('resources/assets/sass/app.scss', 'public/css')
     .tailwind();
