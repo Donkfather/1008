@@ -13,6 +13,6 @@ require('laravel-mix-tailwind');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-    .extract(['vue','moment','vuex'])
+    .extract(['vue','moment','vuex','vue-snotify','vue2-google-maps'])
     .sass('resources/assets/sass/app.scss', 'public/css')
     .tailwind();

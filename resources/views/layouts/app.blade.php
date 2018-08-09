@@ -22,7 +22,7 @@
     </style>
     <script>
         window.appState = {}
-        window.appState.user = {!! auth()->user()  !!}
+        window.appState.user = {!! auth()->guest() ? 'null':auth()->user() !!};
     </script>
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
     <script src="{{mix('js/manifest.js')}}"></script>

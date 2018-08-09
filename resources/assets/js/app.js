@@ -9,9 +9,9 @@ import moment from 'moment'
 import * as VueGoogleMaps from "vue2-google-maps";
 import GmapCluster from 'vue2-google-maps/dist/components/cluster' // replace src with dist if you have Babel issues
 import Vuex, {mapState} from 'vuex'
-import Snotify, { SnotifyPosition } from 'vue-snotify';
+import Snotify, {SnotifyPosition} from 'vue-snotify';
 
-Vue.use(Snotify,{
+Vue.use(Snotify, {
     toast: {
         position: SnotifyPosition.rightTop
     }
@@ -45,7 +45,6 @@ let store = new Vuex.Store({
         events: [],
         selectedEvent: null
     },
-    getters: {},
     mutations: {
         addEvents(state, payload) {
             payload.forEach(item => {
@@ -82,33 +81,30 @@ const app = new Vue({
         user: state => state.user,
         selectedEvent: state => state.selectedEvent
     }),
-    beforeCreate() {
+    created() {
         this.$store.commit('updateUser', window.appState.user);
     },
     mounted() {
-        axios.get('/events').then(response => {
-            let events = response.data.events
-            this.$store.commit('addEvents', events)
-            this.subscribeToEvents();
-        })
+        if (this.user) {
+            axios.get('/events').then(response => {
+                let events = response.data.events
+                this.$store.commit('addEvents', events)
+                this.subscribeToEvents();
+            })
+        }
+
     },
     methods: {
         subscribeToEvents() {
-            this.events.forEach(ev => {
-                Echo.channel(`event-${ev.id}`)
-                    .listen('NewCheckinLocation', (location) => {
-                        this.$store.commit('addLocationToEvent', location)
-                    })
-            })
 
         },
         checkIn(event) {
-            if (navigator.geolocation) {
+            if (navigator.geolocation && this.user) {
                 navigator.geolocation.getCurrentPosition(position => {
                     axios.post(`/events/${event.id}/checkin`, {
                         location: {
-                            lat: position.coords.latitude + (Math.floor(Math.random() * 999) + 111) / 10**6,
-                            lng: position.coords.longitude + (Math.floor(Math.random() * 999) + 111) / 10**6
+                            lat: position.coords.latitude + (Math.floor(Math.random() * 999) + 111) / 10 ** 6,
+                            lng: position.coords.longitude + (Math.floor(Math.random() * 999) + 111) / 10 ** 6
                         },
                     })
                         .then(response => {
@@ -116,12 +112,11 @@ const app = new Vue({
                             this.$store.commit('patchEvent', {id: e.id, event: e})
                             this.$snotify.success('Locatia a fost trimisa cu succes.');
                         });
-
-                },error => {
-                    this.$snotify.warning('A aparut o eroare. Trebuie sa permiti accesul la locatie.');
+                }, error => {
+                    this.$snotify.warning('A aparut o eroare. Trebuie sa permiti accesul la locatie.')
                 })
             } else {
-                alert('Location system not available. sorry :(')
+                this.$snotify.error('Deviceul tau nu suporta functia de locatie. Scuze :(')
             }
 
         }
