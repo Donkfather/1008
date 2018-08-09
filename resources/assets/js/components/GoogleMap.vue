@@ -82,7 +82,7 @@
         },
         methods: {
             getPoints() {
-                return this.points[(this.event.hasOwnProperty('id'))?this.event.id:0]
+                return this.points[(this.event && this.event.hasOwnProperty('id'))?this.event.id:0]
             },
             reloadMap() {
                 console.log('called reloadMap')
