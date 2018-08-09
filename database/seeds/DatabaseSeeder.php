@@ -13,8 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         Event::truncate();
         \App\EventToken::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
         $events = [
             [
                 'name' => 'Eveniment Global',
