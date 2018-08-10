@@ -15,9 +15,9 @@
                 <br>
                 <ul class="text-left">
                     <li>Numele contului din facebook (pentru a iti arata pe ce cont esti logat)</li>
-                    <li>Idul profilului din facebook (pentru autentificare)</li>
+                    <li>ID-ul profilului din facebook (pentru autentificare)</li>
                     <li>O legatura intre contul tau si evenimentul in care ai dat checkin (pentru a putea pastra un checkin/cont/eveniment)</li>
-                    <li>Coordonatele locatiei tale din momentul in care apesi checkin ddar nu cu o acuratete prea mare</li>
+                    <li>Coordonatele locatiei tale din momentul in care apesi checkin dar nu cu o acuratete prea mare</li>
                 </ul>
                 <br>
                 <br>
